@@ -4,12 +4,14 @@
     <form method="post">
         <label for="email">Correo electrónico:</label>
         <input type="email" id="email" name="email" required>
-
-        <label for="password">Contraseña:</label>
-        <input type="password" id="password" name="password" required>
-
-        <button type="submit">Iniciar sesión</button>
-        <p>¿No tienes cuenta? <a href="{{ url_for('show_signup_form') }}" class="btn btn-primary">Soy nuevo</a></p>
+        <div>
+            <label for="password">Contraseña:</label>
+            <input type="password" id="password" name="password" required>
+        </div>
+        <div>
+            <button type="submit">Iniciar sesión</button>
+            <p>¿No tienes cuenta? <a href="{{ url_for('show_signup_form') }}" class="btn btn-primary">Soy nuevo</a></p>
+        </div>
     </form>
 
     {% if error %}

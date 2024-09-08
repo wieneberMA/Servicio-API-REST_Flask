@@ -5,12 +5,13 @@ from werkzeug.security import check_password_hash
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from config import Config
+from flask_jwt_extended import create_access_token, jwt_required, JWTManager
+from flask import jsonify
 
 app = Flask(__name__)
-
-app.config['SECRET_KEY'] = '7110c8ae51a4b5af97be6534caef90e4bb9bdcb3380af008f90b23a5d1616bf319bc298105da20fe'
 app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql://{Config.DB_USERNAME}:{Config.DB_PASSWORD}@{Config.DB_HOST}/{Config.DB_NAME}'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['JWT_SECRET_KEY'] = '7110c8ae51a4b5af97be6534caef90e4bb9bdcb3380af008f90b23a5d1616bf319bc298105da20fe'
 
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
@@ -23,9 +24,16 @@ login_manager = LoginManager(app)
 def load_user(user_id):
     return User.query.get(int(user_id))
 
+jwt = JWTManager(app)
+
 @app.route('/')
 def index():
     return render_template("index.html")
+
+@app.route('/protected')
+@jwt_required
+def protected():
+    return 'Acceso permitido'
 
 @app.route('/login', methods=["GET", "POST"])
 def show_login():
@@ -35,12 +43,13 @@ def show_login():
         user = User.query.filter_by(email=useremail).first()
         if user and check_password_hash(user.password, password):
             # User exists and password is correct, login successful
-            login_user(user)  # Inicia sesión al usuario
-            return redirect(url_for('index'))
+            access_token = create_access_token(identity=user.email)
+            print(f"Acces Token:{access_token}" )
+            return render_template("index.html")
         else:
             # Invalid credentials
             error = 'Invalid username or password'
-            return render_template("login.html", error=error)
+            return render_template("login.html", error=error, token_denied=True), 401
     return render_template("login.html")
 
 @app.route("/registro/", methods=["GET", "POST"])
