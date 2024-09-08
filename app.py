@@ -28,12 +28,18 @@ jwt = JWTManager(app)
 
 @app.route('/')
 def index():
-    return render_template("index.html")
+    return redirect(url_for('show_login'))
 
 @app.route('/protected')
 @jwt_required
 def protected():
     return 'Acceso permitido'
+
+@app.route('/users')
+def get_users():
+    users = User.query.all()
+    return render_template("Users_list.html", users=users)
+
 
 @app.route('/login', methods=["GET", "POST"])
 def show_login():
@@ -45,7 +51,7 @@ def show_login():
             # User exists and password is correct, login successful
             access_token = create_access_token(identity=user.email)
             print(f"Acces Token:{access_token}" )
-            return render_template("index.html")
+            return redirect(url_for('get_users'))
         else:
             # Invalid credentials
             error = 'Invalid username or password'

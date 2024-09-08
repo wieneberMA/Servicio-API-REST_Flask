@@ -1,0 +1,19 @@
+{% for user in users %}
+<tr>
+    <div>
+        <td>{{ user.nombre + user.apellido_paterno + user.apellido_materno}}</td>
+    </div>
+    <div>
+        <td>{{ user.email }}</td>
+    </div>
+    <div>
+        <td>{{ user.fecha_nacimiento }}</td>
+    </div>
+    <div>
+        <td>{{ user.estado }}</td>
+    </div>
+    <div>
+        <td>{{ user.nickname }}</td>
+    </div>
+</tr>
+{% endfor %}
