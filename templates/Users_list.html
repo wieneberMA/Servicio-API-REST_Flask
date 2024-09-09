@@ -1,12 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lista de Usuarios</title>
-    <link rel="stylesheet" href="/static/styles.css"> <!-- CSS externo -->
-</head>
-<body>
+{% extends 'base.html' %}
+
+{% set style_file = 'styles_lista_users.css' %}
+
+{% block title %}Lista de Usuarios{% endblock %}
+
+{% block content %}
     <h1>Lista de Usuarios</h1>
     <form method="get">
         <label for="nombre">Nombre:</label>
@@ -41,5 +39,4 @@
             {% endfor %}
         </tbody>
     </table>
-</body>
-</html>
+{% endblock %}
