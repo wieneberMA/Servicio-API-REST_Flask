@@ -1,66 +1,75 @@
-{% block title %}Registro de usuarios{% endblock %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Registro de usuarios{% endblock %}</title>
+    <link rel="stylesheet" href="/static/styles_registro.css">
+</head>
+<body>
+    <div class="register-container">
+        <h2>Registro de Usuarios</h2>
+        <form action="" method="post" novalidate class="register-form">
+            {{ form.hidden_tag() }}
 
-{% block content %}
-    <form action="" method="post" novalidate>
-        {{ form.hidden_tag() }}
-        <div>
-            {{ form.nombre.label }}
-            {{ form.nombre(size=64) }}<br>
-            {% for error in form.nombre.errors %}
-            <span style="color: red;">{{ error }}</span>
-            {% endfor %}
-        </div>
-        <div>
-            {{ form.apellido_paterno.label }}
-            {{ form.apellido_paterno(size=64) }}<br>
-            {% for error in form.apellido_paterno.errors %}
-            <span style="color: red;">{{ error }}</span>
-            {% endfor %}
-        </div>
-        <div>
-            {{ form.apellido_materno.label }}
-            {{ form.apellido_materno(size=64) }}<br>
-            {% for error in form.apellido_materno.errors %}
-            <span style="color: red;">{{ error }}</span>
-            {% endfor %}
-        </div>
-        <div>
-            {{ form.fecha_nacimiento.label }}
-            {{ form.fecha_nacimiento(type="date") }}<br>
-            {% for error in form.fecha_nacimiento.errors %}
-            <span style="color: red;">{{ error }}</span>
-            {% endfor %}
-        </div>
-        <div>
-            {{ form.estado.label }}
-            {{ form.estado(size=64) }}<br>
-            {% for error in form.estado.errors %}
-            <span style="color: red;">{{ error }}</span>
-            {% endfor %}
-        </div>
-        <div>
-            {{ form.nickname.label }}
-            {{ form.nickname(size=64) }}<br>
-            {% for error in form.nickname.errors %}
-            <span style="color: red;">{{ error }}</span>
-            {% endfor %}
-        </div>
-        <div>
-            {{ form.password.label }}
-            {{ form.password }}<br>
-            {% for error in form.password.errors %}
-            <span style="color: red;">{{ error }}</span>
-            {% endfor %}
-        </div>
-        <div>
-            {{ form.email.label }}
-            {{ form.email }}<br>
-            {% for error in form.email.errors %}
-            <span style="color: red;">{{ error }}</span>
-            {% endfor %}
-        </div>
-        <div>
-            {{ form.submit() }}
-        </div>
-    </form>
-{% endblock %}
+            <div class="input-group">
+                <label for="nombre">{{ form.nombre.label }}</label>
+                {{ form.nombre(size=64, class_="input-field") }}
+                {% for error in form.nombre.errors %}
+                    <span class="error-message">{{ error }}</span>
+                {% endfor %}
+            </div>
+
+            <div class="input-group">
+                <label for="apellido_paterno">{{ form.apellido_paterno.label }}</label>
+                {{ form.apellido_paterno(size=64, class_="input-field") }}
+                {% for error in form.apellido_paterno.errors %}
+                    <span class="error-message">{{ error }}</span>
+                {% endfor %}
+            </div>
+
+            <div class="input-group">
+                <label for="apellido_materno">{{ form.apellido_materno.label }}</label>
+                {{ form.apellido_materno(size=64, class_="input-field") }}
+                {% for error in form.apellido_materno.errors %}
+                    <span class="error-message">{{ error }}</span>
+                {% endfor %}
+            </div>
+
+            <div class="input-group">
+                <label for="fecha_nacimiento">{{ form.fecha_nacimiento.label }}</label>
+                {{ form.fecha_nacimiento(type="date", class_="input-field") }}
+                {% for error in form.fecha_nacimiento.errors %}
+                    <span class="error-message">{{ error }}</span>
+                {% endfor %}
+            </div>
+            <div class="input-group">
+                <label for="nickname">{{ form.nickname.label }}</label>
+                {{ form.nickname(size=64, class_="input-field") }}
+                {% for error in form.nickname.errors %}
+                    <span class="error-message">{{ error }}</span>
+                {% endfor %}
+            </div>
+
+            <div class="input-group">
+                <label for="password">{{ form.password.label }}</label>
+                {{ form.password(class_="input-field") }}
+                {% for error in form.password.errors %}
+                    <span class="error-message">{{ error }}</span>
+                {% endfor %}
+            </div>
+
+            <div class="input-group">
+                <label for="email">{{ form.email.label }}</label>
+                {{ form.email(class_="input-field") }}
+                {% for error in form.email.errors %}
+                    <span class="error-message">{{ error }}</span>
+                {% endfor %}
+            </div>
+            <div class="input-group">
+                {{ form.submit(class_="btn-submit") }}
+            </div>
+        </form>
+    </div>
+</body>
+</html>

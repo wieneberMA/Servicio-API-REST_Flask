@@ -1,19 +1,34 @@
-{% for user in users %}
-<tr>
-    <div>
-        <td>{{ user.nombre + user.apellido_paterno + user.apellido_materno}}</td>
-    </div>
-    <div>
-        <td>{{ user.email }}</td>
-    </div>
-    <div>
-        <td>{{ user.fecha_nacimiento }}</td>
-    </div>
-    <div>
-        <td>{{ user.estado }}</td>
-    </div>
-    <div>
-        <td>{{ user.nickname }}</td>
-    </div>
-</tr>
-{% endfor %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Users List</title>
+    <link rel="stylesheet" href="/static/styles.css"> <!-- CSS externo -->
+</head>
+<body>
+    <h1>Lista de Usuarios</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Nombre Completo</th>
+                <th>Email</th>
+                <th>Fecha de Nacimiento</th>
+                <th>Estado</th>
+                <th>Nickname</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+            <tr>
+                <td>{{ user.nombre + " " + user.apellido_paterno + " " + user.apellido_materno }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.fecha_nacimiento }}</td>
+                <td>{{ user.is_active }}</td>
+                <td>{{ user.nickname }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

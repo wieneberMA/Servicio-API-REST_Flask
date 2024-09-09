@@ -12,6 +12,7 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql://{Config.DB_USERNAME}:{Config.DB_PASSWORD}@{Config.DB_HOST}/{Config.DB_NAME}'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['JWT_SECRET_KEY'] = '7110c8ae51a4b5af97be6534caef90e4bb9bdcb3380af008f90b23a5d1616bf319bc298105da20fe'
+app.config['SECRET_KEY'] = '1q2w3e4r5t6y7u8i9o0p'
 
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
@@ -36,6 +37,7 @@ def protected():
     return 'Acceso permitido'
 
 @app.route('/users')
+# @jwt_required()
 def get_users():
     users = User.query.all()
     return render_template("Users_list.html", users=users)
@@ -51,10 +53,11 @@ def show_login():
             # User exists and password is correct, login successful
             access_token = create_access_token(identity=user.email)
             print(f"Acces Token:{access_token}" )
+            jsonify(access_token=access_token), 200
             return redirect(url_for('get_users'))
         else:
             # Invalid credentials
-            error = 'Invalid username or password'
+            error = 'Correo o Contraseña No valido'
             return render_template("login.html", error=error, token_denied=True), 401
     return render_template("login.html")
 
@@ -68,7 +71,6 @@ def show_signup_form():
             apellido_paterno=form.apellido_paterno.data,
             apellido_materno=form.apellido_materno.data,
             fecha_nacimiento=form.fecha_nacimiento.data,
-            estado=form.estado.data,
             nickname=form.nickname.data,
             email=form.email.data,
             password=generate_password_hash(form.password.data, method='pbkdf2:sha256')
