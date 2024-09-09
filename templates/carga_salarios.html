@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% set style_file = 'styles_lista_users.css' %}
+
+{% block title %}Cargar Salarios{% endblock %}
+
+{% block content %}
+    <div>
+        <form action="/upload" method="post" enctype="multipart/form-data">
+            <input type="file" name="file">
+            <input type="submit" value="Cargar archivo">
+            {% if msj %}
+                <p style="color: dodgerblue;">{{ msj }}</p> 
+            {% endif %}
+            
+            {% if salario_promedio %}
+                <p>Salario promedio: {{ salario_promedio }}</p>
+            {% endif %}
+
+            {% if empleado_mas_alto %}
+                <p>Empleado con el salario más alto: {{ empleado_mas_alto.0 }} ({{ empleado_mas_alto.1 }})</p>
+            {% endif %}
+            {% if Data %}
+                <p>Contenido del archivo:</p>
+                <ul>
+                    {% for row in Data %}
+                        <li>
+                            {{ row | join(' ') }}
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </form>
+    </div>
+{% endblock %}
