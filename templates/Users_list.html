@@ -3,11 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Users List</title>
+    <title>Lista de Usuarios</title>
     <link rel="stylesheet" href="/static/styles.css"> <!-- CSS externo -->
 </head>
 <body>
     <h1>Lista de Usuarios</h1>
+    <form method="get">
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre" name="nombre" value="{{ request.args.get('nombre') }}">
+        <label for="estado">Estado:</label>
+        <select id="estado" name="estado">
+            <option value="">Todos</option>
+            <option value="True" {% if request.args.get('estado') == "True" %}selected{% endif %}>Activo</option>
+            <option value="False" {% if request.args.get('estado') == "False" %}selected{% endif %}>Inactivo</option>
+        </select>
+        <button type="submit">Buscar</button>
+    </form>
     <table>
         <thead>
             <tr>

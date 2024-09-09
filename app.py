@@ -37,9 +37,21 @@ def protected():
     return 'Acceso permitido'
 
 @app.route('/users')
-# @jwt_required()
+# @jwt_required
 def get_users():
     users = User.query.all()
+    nombre = request.args.get('nombre')
+    estado = request.args.get('estado')
+
+    if nombre:
+        users = User.query.filter(
+            (User.nombre.like(f"%{nombre}%")) |
+            (User.apellido_paterno.like(f"%{nombre}%")) |
+            (User.apellido_materno.like(f"%{nombre}%"))
+        ).all()
+    if estado:
+        users = User.query.filter(User.is_active == (estado == "True")).all()
+
     return render_template("Users_list.html", users=users)
 
 
