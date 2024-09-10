@@ -16,7 +16,7 @@ El servicio REST que deberás realizar tiene la funcionalidad de registrar y con
 ### Installation
 * 0.- Clona El Repositorio [Servicio-API-REST_Flask](https://github.com/wieneberMA/Servicio-API-REST_Flask)
 * 1.- Abre una terminal o command prompt en la carpeta raíz del proyecto.
-* 2.- Ejecuta el comando pip install -r requirements.txt para instalar todas las dependencias necesarias.
+* 2.- Ejecuta el comando **pip install -r requirements.txt** para instalar todas las dependencias necesarias.
     ```python bash
         pip install -r requirements.txt
     ```
@@ -33,7 +33,7 @@ El servicio REST que deberás realizar tiene la funcionalidad de registrar y con
         python -m flask db migrate
         python -m flask db upgrade
     ```
-* 5.- Correo el Projecto
+* 5.- Corre el Projecto
     ```python
         python -m flask --app app --debug run
     ```
