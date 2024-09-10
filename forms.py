@@ -7,7 +7,6 @@ class SignupForm(FlaskForm):
     apellido_paterno = StringField('Apellido Paterno', validators=[DataRequired(), Length(min=2, max=100)])
     apellido_materno = StringField('Apellido Materno', validators=[DataRequired(), Length(min=2, max=100)])
     fecha_nacimiento = DateField('Fecha de Nacimiento', validators=[DataRequired()])
-    estado = StringField('Estado', validators=[DataRequired(), Length(min=2, max=100)])
     nickname = StringField('Nickname', validators=[DataRequired(), Length(min=2, max=100)])
     email = StringField('Email', validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired()])

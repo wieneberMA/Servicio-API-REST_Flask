@@ -11,7 +11,7 @@ class User(db.Model):
     password = db.Column(db.String(128), nullable=False)
     is_active = db.Column(db.Boolean, default=True)
 
-    def __init__(self, nombre, apellido_paterno, apellido_materno, fecha_nacimiento, estado, nickname, email, password,is_active):
+    def __init__(self, nombre, apellido_paterno, apellido_materno, fecha_nacimiento, nickname, email, password, is_active):
         self.nombre = nombre
         self.apellido_paterno = apellido_paterno
         self.apellido_materno = apellido_materno
@@ -20,8 +20,6 @@ class User(db.Model):
         self.email = email
         self.password = password
         self.is_active = is_active
-        
-        
 
     def __repr__(self):
         return '<User %r>' % self.nombre

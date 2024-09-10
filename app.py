@@ -25,6 +25,21 @@ db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 from models import User
 
+##Validaciones
+def email_validacion(email):
+    existing_user = User.query.filter_by(email=email).first()
+    return existing_user is not None
+
+
+
+
+
+
+
+
+
+
+
 login_manager = LoginManager(app)
 
 @login_manager.user_loader
@@ -82,20 +97,31 @@ def show_login():
 @app.route("/registro/", methods=["GET", "POST"])
 def show_signup_form():
     from forms import SignupForm
-    form = SignupForm()
+    if request.method == "GET":
+        form = SignupForm()
+    else:
+        form = SignupForm(request.form)
+    print(form.validate_on_submit())
     if form.validate_on_submit():
-        user = User(
-            nombre=form.nombre.data,
-            apellido_paterno=form.apellido_paterno.data,
-            apellido_materno=form.apellido_materno.data,
-            fecha_nacimiento=form.fecha_nacimiento.data,
-            nickname=form.nickname.data,
-            email=form.email.data,
-            password=generate_password_hash(form.password.data, method='pbkdf2:sha256')
-        )
-        db.session.add(user)
-        db.session.commit()
-        return redirect(url_for('index'))
+        email = form.email.data
+        if email_validacion(email):
+            # El correo electrónico ya existe, mostrar un mensaje de error
+            error = 'El correo electrónico ya existe'
+            return render_template("form_registro.html", form=form, error=error)
+        else:
+            user = User(
+                nombre=form.nombre.data,
+                apellido_paterno=form.apellido_paterno.data,
+                apellido_materno=form.apellido_materno.data,
+                fecha_nacimiento=form.fecha_nacimiento.data,
+                nickname=form.nickname.data,
+                email=form.email.data,
+                password=generate_password_hash(form.password.data, method='pbkdf2:sha256'),
+                is_active=True
+            )
+            db.session.add(user)
+            db.session.commit()
+            return render_template("login.html",msj="Cuenta Creada")
     return render_template("form_registro.html", form=form)
 
 
@@ -139,3 +165,20 @@ def upload_file():
                 return 'La extensión del archivo no está permitida', 400
         else:
             return 'No se ha seleccionado ningún archivo', 400
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
