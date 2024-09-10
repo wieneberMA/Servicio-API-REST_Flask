@@ -1,0 +1,21 @@
+# Python files
+__pycache__/
+*.pyc
+
+# Flask files
+instance/
+*.sqlite
+
+# Virtual environment files
+venv/
+env/
+
+# IDE files
+.vscode/
+.pydev/
+
+# Log files
+logs/
+*.log
+
+/Virtual
