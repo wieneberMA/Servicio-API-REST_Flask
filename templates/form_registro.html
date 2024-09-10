@@ -5,9 +5,42 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Registro de usuarios{% endblock %}</title>
     <link rel="stylesheet" href="/static/styles_registro.css">
-    
+    <style>
+        /* Estilos de la barra de navegación */
+        .navbar {
+            background-color: #4CAF50;
+            color: #white;
+            padding: 10px;
+            font-size:18px
+        }
+
+        .navbar ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar li {
+            display: inline-block;
+            margin-right: 20px;
+        }
+
+        .navbar a {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .navbar a:hover {
+            color: #ccc;
+        }
+    </style>
 </head>
 <body>
+    <nav class="navbar">
+        <ul>
+            <li><a href="{{ url_for('show_login') }}">Login</a></li>
+        </ul>
+    </nav>
     <div class="register-container flex-container">
         <h2>Registro de Usuarios</h2>
         <form action="" method="post" novalidate class="register-form">

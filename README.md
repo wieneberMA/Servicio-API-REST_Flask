@@ -8,9 +8,35 @@ El servicio REST que deberás realizar tiene la funcionalidad de registrar y con
 ## Getting Started
 ---------------
 ### Prerequisites
+* Tener Python instalado en tu máquina (versión 3.8 o superior)
+    ```bash
+        python -m venv name_virtual
+    ```
+* Tener pip instalado (el administrador de paquetes de Python)
 ### Installation
-## Setup
-## License
+* 0.- Clona El Repositorio [Servicio-API-REST_Flask](https://github.com/wieneberMA/Servicio-API-REST_Flask)
+* 1.- Abre una terminal o command prompt en la carpeta raíz del proyecto.
+* 2.- Ejecuta el comando pip install -r requirements.txt para instalar todas las dependencias necesarias.
+    ```python bash
+        pip install -r requirements.txt
+    ```
+* 3.- Crea el **DB** y Configura el Archivo **config.py**
+    ```python
+        class Config:
+            DB_USERNAME = 'root'
+            DB_PASSWORD = ''
+            DB_HOST = 'localhost'
+            DB_NAME = 'db_users'
+    ```
+* 4.- Migra las Bases de Datos
+    ```python
+        python -m flask db migrate
+        python -m flask db upgrade
+    ```
+* 5.- Correo el Projecto
+    ```python
+        python -m flask --app app --debug run
+    ```
 -------
 ## Authors
 -------
@@ -73,3 +99,66 @@ La aplicación tiene varias funcionalidades:
 ### Base de Datos
 
 * La aplicación utiliza una base de datos relacional con SQLAlchemy para almacenar los datos de los usuarios. La base de datos se configura con una cadena de conexión que se establece en el archivo config.py.
+
+# Optimizacion
+Supongamos que tienes una aplicación web que muestra el listado de empleados en varios
+módulos. Cada vez que un usuario visita la página, la aplicación realiza una consulta a una
+base de datos para obtener el listado. Esto está afectando negativamente al rendimiento de la
+aplicación debido a la frecuencia de las consultas a la base de datos.
+Tu tarea es proponer una refactorización en el código para que las consultas a la base de
+datos se realicen sólo cuando la información de los empleados cambia, en lugar de cada vez
+que un usuario visita la página. Proponer una solución que almacene en caché la lista de
+productos y solo actualice la caché cuando se añade, modifica o elimina un producto.
+
+## Implementación
+
+[Caching](https://flask.palletsprojects.com/en/3.0.x/patterns/caching/)
+Cuando su aplicación se ejecuta con lentitud, agregue algunos cachés. Bueno, al menos es la forma más fácil de acelerar las cosas. ¿Qué hace un caché? Digamos que tiene una función que tarda un tiempo en completarse, pero los resultados serían lo suficientemente buenos si tuvieran 5 minutos de antigüedad. Entonces, la idea es que realmente coloque el resultado de ese cálculo en un caché durante un tiempo.
+Flask en sí no proporciona almacenamiento en caché, pero Flask-Caching , una extensión para Flask, sí lo hace. Flask-Caching admite varios backends e incluso es posible desarrollar su propio backend de almacenamiento en caché.
+
+
+* Utiliza una técnica de caching (almacenamiento en caché) para reducir el número de consultas a la base de datos. Esta solución se basa en la utilización de una librería de caching como Flask-Cache.
+
+[Flask-Caching](https://flask-caching.readthedocs.io/en/latest/)
+    ```python
+        pip install Flask-Caching 
+    ```
+
+### Configuración  de Ejemplo
+* **app.py**
+    ```python
+        from flask import Flask
+        from flask_cache import Cache
+
+        app = Flask(__name__)
+        cache = Cache(app, config={'CACHE_TYPE': 'SimpleCache'}) 
+
+        @cache.cached(timeout=60)  # caching for 1 minute
+        def get_employees():
+            employees = Employee.query.all()
+            return [employee.to_dict() for employee in employees]
+
+        @app.route('/employees')
+        def show_employees():
+            employees = get_employees()
+            return render_template('employees.html', employees=employees)
+
+        @cache.memoize(timeout=60)
+        def add_employee(employee):
+            db.session.add(employee)
+            db.session.commit()
+            cache.delete_memoized(get_employees)
+
+        @cache.memoize(timeout=60)
+        def update_employee(employee):
+            db.session.commit()
+            cache.delete_memoized(get_employees)
+
+        @cache.memoize(timeout=60)
+        def delete_employee(employee):
+            db.session.delete(employee)
+            db.session.commit()
+            cache.delete_memoized(get_employees)
+    ```
+
+En estos ejemplos, estamos utilizando la función @cache.memoize para indicar que las funciones add_employee, update_employee y delete_employee deben actualizar la caché después de realizar cada una de estas operaciones.

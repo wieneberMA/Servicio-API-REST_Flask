@@ -7,6 +7,7 @@ from flask_login import LoginManager, UserMixin, login_user
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from config import Config
+from flask import flash
 # archivos
 from flask import send_file
 import os
@@ -51,13 +52,6 @@ def validate_password(password):
     if not any(char in '!@#$%^&*()-+?_=,<>/~`|\\' for char in password):
         return {"error": "La contraseña debe contener al menos un carácter especial"}
     return {"success": "La contraseña es válida"}
-
-
-
-
-
-
-
 
 
 login_manager = LoginManager(app)
@@ -145,7 +139,8 @@ def show_signup_form():
             )
             db.session.add(user)
             db.session.commit()
-            return render_template("login.html", msj="Cuenta Creada")
+            flash("Cuenta Creada")
+            return redirect(url_for('show_login'))
     return render_template("form_registro.html", form=form)
 
 
