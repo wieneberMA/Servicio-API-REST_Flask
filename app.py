@@ -31,6 +31,26 @@ def email_validacion(email):
     return existing_user is not None
 
 
+def validate_password(password):
+    """
+    Valida la contraseña según los siguientes criterios:
+    - Debe tener al menos 8 caracteres
+    - Debe contener al menos una letra mayúscula
+    - Debe contener al menos una letra minúscula
+    - Debe contener al menos un número
+    - Debe contener al menos un carácter especial (!, @, #, $, etc.)
+    """
+    if len(password) < 8:
+        return {"error": "La contraseña debe tener al menos 8 caracteres"}
+    if not any(char.isupper() for char in password):
+        return {"error": "La contraseña debe contener al menos una letra mayúscula"}
+    if not any(char.islower() for char in password):
+        return {"error": "La contraseña debe contener al menos una letra minúscula"}
+    if not any(char.isdigit() for char in password):
+        return {"error": "La contraseña debe contener al menos un número"}
+    if not any(char in '!@#$%^&*()-+?_=,<>/~`|\\' for char in password):
+        return {"error": "La contraseña debe contener al menos un carácter especial"}
+    return {"success": "La contraseña es válida"}
 
 
 
@@ -101,9 +121,13 @@ def show_signup_form():
         form = SignupForm()
     else:
         form = SignupForm(request.form)
-    print(form.validate_on_submit())
     if form.validate_on_submit():
         email = form.email.data
+        password = form.password.data
+        password_validation = validate_password(password)
+        if "error" in password_validation:
+            error = password_validation["error"]
+            return render_template("form_registro.html", form=form, error=error)
         if email_validacion(email):
             # El correo electrónico ya existe, mostrar un mensaje de error
             error = 'El correo electrónico ya existe'
@@ -116,12 +140,12 @@ def show_signup_form():
                 fecha_nacimiento=form.fecha_nacimiento.data,
                 nickname=form.nickname.data,
                 email=form.email.data,
-                password=generate_password_hash(form.password.data, method='pbkdf2:sha256'),
+                password=generate_password_hash(password, method='pbkdf2:sha256'),
                 is_active=True
             )
             db.session.add(user)
             db.session.commit()
-            return render_template("login.html",msj="Cuenta Creada")
+            return render_template("login.html", msj="Cuenta Creada")
     return render_template("form_registro.html", form=form)
 
 

@@ -5,9 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Registro de usuarios{% endblock %}</title>
     <link rel="stylesheet" href="/static/styles_registro.css">
+    
 </head>
 <body>
-    <div class="register-container">
+    <div class="register-container flex-container">
         <h2>Registro de Usuarios</h2>
         <form action="" method="post" novalidate class="register-form">
             {{ form.hidden_tag() }}
@@ -52,7 +53,7 @@
             </div>
 
             <div class="input-group">
-                <label for="password">{{ form.password.label }}</label>
+                <label name = "password" for="password">{{ form.password.label }}</label>
                 {{ form.password(class_="input-field") }}
                 {% for error in form.password.errors %}
                     <span class="error-message">{{ error }}</span>
